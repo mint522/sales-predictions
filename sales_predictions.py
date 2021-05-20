@@ -2,18 +2,75 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np 
 import seaborn as sns
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsRegressor
 
 filename = '/Users/jiali/Documents/Python_CodingDojo/sales_predictions.csv'
 df = pd.read_csv(filename)
+print(df.info())
 
-#delete column 'Item_Weight'
-#keeping column 'Outlet_Size' for now, still deciding whether to delete the column or not. Can't delete NaN rows since too many records.
-df.drop(columns='Item_Weight', inplace=True)
 
 #data clean
+#delete column 'Item_Weight' and 'Outlet_Size'
+df.drop(columns=['Item_Weight', 'Outlet_Size'], inplace=True)
+#standardize
+print(df['Item_Fat_Content'].value_counts())
 df['Item_Fat_Content'] = df['Item_Fat_Content'].replace({'low fat': 'Low Fat', 'LF': 'Low Fat', 'reg': 'Regular'})
 
 
+#Encoding Categorical Data
+#referece: https://towardsdatascience.com/understanding-feature-engineering-part-2-categorical-data-f54324193e63
+fat_label = LabelEncoder().fit_transform(df['Item_Fat_Content'])
+df['Item_Fat_Content_Label'] = fat_label
+
+print(df['Item_Type'].value_counts())
+item_type_label = LabelEncoder().fit_transform(df['Item_Type'])
+df['Item_Type_Label'] = item_type_label
+
+print(df['Outlet_Location_Type'].value_counts())
+outlet_location_type_label = LabelEncoder().fit_transform(df['Outlet_Location_Type'])
+df['Outlet_Location_Type_Label'] = outlet_location_type_label
+
+print(df['Outlet_Type'].value_counts())
+outlet_type_label = LabelEncoder().fit_transform(df['Outlet_Type'])
+df['Outlet_Type_Label'] = outlet_type_label
+
+print(df.head(10))
+print(df.info())
+
+
+#Linear Regression
+X = df[['Item_Visibility', 'Item_MRP', 'Outlet_Establishment_Year', 'Item_Fat_Content_Label', 'Item_Type_Label', 'Outlet_Location_Type_Label', 'Outlet_Type_Label']]
+y = df['Item_Outlet_Sales']
+
+reg = LinearRegression(fit_intercept=True)
+reg.fit(X, y)
+#Coefficient of Determination
+print(r2_score(y, reg.predict(X)))
+#Mean squared error (MSE)
+print(mean_squared_error(y, reg.predict(X)))
+#Mean absolute error (MAE)
+print(mean_absolute_error(y, reg.predict(X)))
+#Root mean squared error (RMSE)
+print(np.sqrt(mean_squared_error(y, reg.predict(X))))
+
+
+#KNN
+scaler = StandardScaler()
+scaler.fit(X)
+X = scaler.transform(X)
+knn = KNeighborsRegressor()
+knn.fit(X, y)
+print(knn.predict(X))
+print(knn.score(X, y))
+
+
+#visualization
 item = df.groupby(['Item_Identifier'])[['Item_Outlet_Sales']].sum()
 item_top_sales = item.sort_values('Item_Outlet_Sales', ascending=False).head(10)
 
@@ -64,15 +121,13 @@ plt.title('Item Outlet Sales by Item Fat Content', fontsize=10)
 #heatmap
 #reference: https://www.geeksforgeeks.org/how-to-change-the-colorbar-size-of-a-seaborn-heatmap-figure-in-python/
 plt.subplot(2,3,6)
-sns.heatmap(df.corr(), annot=None, square=True, cmap='Blues', xticklabels=(['Visibility', 'MRP', 'Year', 'Sales']), yticklabels=(['Visibility', 'MRP', 'Year', 'Sales']))
+sns.heatmap(df.corr(), annot=None, square=True, cmap='Blues', xticklabels=(['Item Visibility', 'MRP', 'Outlet Est Year', 'Sales', 'Item Fat', 'Item Type', 'Outlet Loc', 'Outlet Type']), yticklabels=(['Item Visibility', 'MRP', 'Outlet Est Year', 'Sales', 'Item Fat', 'Item Type', 'Outlet Loc', 'Outlet Type']))
 plt.yticks(rotation=0)
-plt.title('Correction between features', fontsize=10)
+plt.title('Correlation between features', fontsize=10)
 plt.show()
 
+#Is there anything you can do to improve your model?
+#Could remove records where 'Item_Visibility'==0 
 
-#backup groups for future use
-# item_fat_content = df.groupby(df['Item_Fat_Content'])['Item_Outlet_Sales'].sum()
-# item_type = df.groupby(df['Item_Type'])['Item_Outlet_Sales'].sum()
-# outlet_year = df.groupby(['Outlet_Establishment_Year'])['Item_Outlet_Sales'].sum()
-# outlet_loc = df.groupby(['Outlet_Location_Type'])['Item_Outlet_Sales'].sum()
-# outlet_type = df.groupby(['Outlet_Type'])['Item_Outlet_Sales'].sum()
+#Which features are most associated with higher predicted sales?
+#Item Outlet Sales is more related with Item MRP and Outlet Type
