@@ -1,3 +1,4 @@
 # sales-predictions
 predict sales
-![Figure_2](https://user-images.githubusercontent.com/82603737/118032704-d2154e80-b31c-11eb-9f9c-4dbe1d1a4e81.png)
+![Figure_4](https://user-images.githubusercontent.com/82603737/119036896-272d1200-b966-11eb-8750-2b8669d66ba1.png)
+
