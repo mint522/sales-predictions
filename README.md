@@ -20,7 +20,7 @@ Analyze the product sales data of FoodStore from 1985 to 2009 and find the facto
 
 ## Data Clean
 ### Delete ‘Item_Weight’ column
-1463 values are missing in ‘Item_Weight’ column. If delete all the records (rows) where item weight is missing, 17% of the data will be deleted which could impact data analyze. All the missing values in ‘Item_Weight’ are from year 1985. The owner of FoodStore told me that the data was missing because the store didn’t started to record item weight until after 1985. Since the missing data are old and the correlation between item weight and sales are small (0.014, not strongly linear related), I decided to delete the ‘Item_Weight’ column.
+1463 values are missing in ‘Item_Weight’ column. If delete all the records (rows) where item weight is missing, 17% of the data will be deleted which could impact data analyze. All the missing values in ‘Item_Weight’ are from year 1985. The owner of FoodStore told me that the data was missing because the store didn’t start to record item weight until after 1985. Since the missing data are old and the correlation between item weight and sales are small (0.014, not strongly linear related), I decided to delete the ‘Item_Weight’ column.
 ### Delete ‘Outlet_Size’ column
 2410 values are missing in ‘Outlet_Size’ column. If delete all the records (rows) where outlet size is missing, 28% of the data will be deleted. Not sufficient enough data could cause less accurate data prediction. Those missing values are from Grocery Store and Supermarket Type1. Since each outlet type contains different outlet size, it’s hard to fill the missing values. The histogram showing the sales distribution for ‘Outlet_Size’, ‘Outlet_Location_Type’ and ‘Outlet_Type’ are similar, which means ‘Outlet_Location_Type’ and ‘Outlet_Type’ can represent the outlet features without ‘Outlet_Size’. Also ‘Outlet_Size’ and sales has low correlation (0.13, not strongly linear related)), so I deleted ‘Outlet_Size’ column.
 ![hist outlet size](https://user-images.githubusercontent.com/82603737/120882587-a426d100-c58d-11eb-8381-bb6f8aee1a76.png)
@@ -49,7 +49,7 @@ Supermarket type 1 has much more sales than other outlet types.
 Supermarket Type1 at location Tier 2 has the most sales in all.
 ![sales by outlet type and location](https://user-images.githubusercontent.com/82603737/120883049-e0f3c780-c58f-11eb-866f-176941bdd9fc.png)
 ### Item Visibility
-Visibility has low negative correlation (-0.11) with sales. The most sales are in lower visibility. As the visibility increasing, the sales is getting lower. The reason could be some items are taken too much capacity than it should be. I also noticed that there are several 0 visibility items with good sales, I assume there are some missing or incorrect data for this feature. 
+Visibility has low negative correlation (-0.11) with sales. The most sales are in lower visibility. As the visibility increasing, the sales are getting lower. The reason could be some items are taken too much capacity than it should be. I also noticed that there are several 0 visibility items with good sales, I assume there are some missing or incorrect data for this feature. 
 ![visibility vs sales](https://user-images.githubusercontent.com/82603737/120883064-f10ba700-c58f-11eb-96b5-29b304ed37b2.png)
 
 ## Modeling
