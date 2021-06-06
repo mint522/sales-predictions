@@ -1,5 +1,5 @@
 # Food Sales Prediction
-Predict food sales in variety stores of FoodStore.
+Predict food sales with machine learning in variety stores of FoodStore.
 
 ## Objectives
 Analyze the product sales data of FoodStore from 1985 to 2009 and find the factors that affect the sales.
@@ -28,10 +28,10 @@ Analyze the product sales data of FoodStore from 1985 to 2009 and find the facto
 <img src="https://user-images.githubusercontent.com/82603737/120882596-b4d74700-c58d-11eb-8e72-1ab4f86afbcb.png" width="640" height="480"/>
 
 
-From correlation heatmap, Item MRP and Outlet Location Type are more related to sales. Outlet Establishment Year and Outlet Size are low correlation.
+From correlation heatmap, Item MRP and Outlet Location Type are more related to sales. Outlet Establishment Year and Outlet Size are low correlation with sales.
 ![corr with annot](https://user-images.githubusercontent.com/82603737/120882886-295eb580-c58f-11eb-877c-9a426d51a3bd.png)
 ### Delete ‘Outlet_Establishment_Year’ column
-Each outlet has an establishment year. Sort sales by outlet. Find out that sales and year is weak correlation (-0.058), which means as the sales increasing or decreasing, the year is randomly displaying, not changing to the same/opposite direction and there’s no pattern. It’s better off to delete the ‘Outlet_Establishment_Year’ column because I don’t want the data analyze model taking recent years as more important than older years. 
+Each outlet has an establishment year. Sort sales by outlet. Find out that sales and year are weak correlation (-0.058), which means as the sales increasing or decreasing, the year is randomly displaying, not changing to the same/opposite direction and there’s no pattern. It’s better off to delete the ‘Outlet_Establishment_Year’ column because I don’t want the data analyze model taking recent years as more important than older years. 
 ![sales by outlet](https://user-images.githubusercontent.com/82603737/120882927-54e1a000-c58f-11eb-8da6-cb624fd850e1.png)
 
 ## Data analyze and visualization 
@@ -53,7 +53,7 @@ Visibility has low negative correlation (-0.11) with sales. The most sales are i
 ![visibility vs sales](https://user-images.githubusercontent.com/82603737/120883064-f10ba700-c58f-11eb-96b5-29b304ed37b2.png)
 
 ## Modeling
-Used train test split on linear regression, random forest regression and KNN.
+Used train test split on Linear Regression, Random Forest Regression and KNN. Also ran some tests to determine n_estimators for Random Forest Regression and n_neighbors for KNN for best scores. 
 ### Linear Regression
 - score for training data is 0.55.
 - score for test data is 0.59.
@@ -73,11 +73,11 @@ From random forest regression model, item MRP, Outlet Type, Item Visibility are 
 - score for test data is 0.54.
 - RMSE (root mean squared error) is 1149 meaning on average my model predict is off by 1149.
 ## Conclusion
-The final model I choose is linear regression because it has the best score for test data – 0.59, meaning 59% of the prediction for unseen data is correct, and lowest RMSE (root mean squared error) – 1093, meaning on average my model is off by 1093. 
+The final model I choose is Linear Regression because it has the best score for test data – 0.59, meaning 59% of the prediction for unseen data is correct, and lowest RMSE (root mean squared error) – 1093, meaning on average my model is off by 1093. 
 
 From correlation and model analysis, Item MRP, Outlet Location Type, Outlet Type are the main factors affecting sales. 
 ## Recommendation
-- Sell more higher price products
+- Sell more high price products
 - For future stores, supermarket type1 at tier 2 location is the best combination. 
 
 
